@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Physyra: see the body respond, second by second</title>
+<meta name="description" content="Physyra is an interactive physiology simulator. Watch the heart, lungs, nerves and temperature control respond to standing, exercise, blood loss, fever and more, then change the variables yourself.">
+<meta property="og:title" content="Physyra: an interactive physiology simulator">
+<meta property="og:description" content="Watch how the body responds step by step, then experiment with it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h2 class="brand" style="margin:0"><svg class="mark" viewBox="0 0 64 24" aria-hidden="true"><path d="M1 13H17L22 3L29 22L34 8L38 13H63"/></svg>PHYSYRA</h2>
+    <p class="tag" style="margin:0">See the body respond, second by second.</p>
+    <span class="spacer"></span>
+    <div class="seg modes" role="group" aria-label="Mode">
+      <button data-act="mode" data-mode="scenarios" aria-pressed="true">Scenarios</button>
+      <button data-act="mode" data-mode="explore" aria-pressed="false">Explore</button>
+      <button data-act="mode" data-mode="challenge" aria-pressed="false">Challenge</button>
+      <button data-act="mode" data-mode="cases" aria-pressed="false">Cases</button>
+      <button data-act="mode" data-mode="glossary" aria-pressed="false">Glossary</button>
+      <button data-act="mode" data-mode="about" aria-pressed="false">About</button>
+    </div>
+    <div class="seg" role="group" aria-label="Explanation detail">
+      <button data-act="level" data-level="basic" aria-pressed="true">Basic</button>
+      <button data-act="level" data-level="mech" aria-pressed="false">Mechanism</button>
+    </div>
+  </header>
+
+  <div class="intro" id="intro"><p><strong>Welcome to Physyra.</strong> Choose a scenario and press play to watch the body respond step by step. Click any part of the body to learn its anatomy. Use <em>Explore</em> to change the body yourself, then test what you know with <em>Challenge</em> and <em>Cases</em>.</p><button class="btn" data-act="intro">Got it</button></div>
+
+  <nav class="picker" id="picker" aria-label="Choose a scenario"></nav>
+
+  <main class="stage">
+    <section class="figure-col" aria-label="Body">
+      <h1 id="scTitle"></h1>
+      <p class="q" id="scQ"></p>
+      <div class="fig-wrap">
+<svg id="fig" viewBox="-150 0 560 560" role="img" aria-label="Animated diagram of the human body showing the heart, lungs, brain, blood vessels, and muscles responding to the simulation">
+  <defs>
+    <radialGradient id="auraG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--thermo)" stop-opacity=".8"/><stop offset="1" stop-color="var(--thermo)" stop-opacity="0"/></radialGradient>
+    <clipPath id="clipLegs"><rect x="88" y="250" width="40" height="250" rx="18"/><rect x="132" y="250" width="40" height="250" rx="18"/></clipPath>
+    <clipPath id="clipLimbs"><rect x="56" y="104" width="26" height="150" rx="13"/><rect x="178" y="104" width="26" height="150" rx="13"/><rect x="88" y="250" width="40" height="250" rx="18"/><rect x="132" y="250" width="40" height="250" rx="18"/></clipPath>
+  </defs>
+  <g id="rig" transform="rotate(0 130 280)">
+    <ellipse id="aura" pointer-events="none" cx="130" cy="280" rx="190" ry="310" fill="url(#auraG)" opacity="0"/>
+    <g class="shape">
+      <rect data-act="part" data-id="muscle" x="56" y="104" width="26" height="150" rx="13"/>
+      <rect data-act="part" data-id="muscle" x="178" y="104" width="26" height="150" rx="13"/>
+      <rect data-act="part" data-id="muscle" x="88" y="250" width="40" height="250" rx="18"/>
+      <rect data-act="part" data-id="muscle" x="132" y="250" width="40" height="250" rx="18"/>
+      <rect x="118" y="78" width="24" height="28"/>
+      <path data-act="part" data-id="skin" d="M84 104 Q130 92 176 104 L186 252 Q130 270 74 252 Z"/>
+      <circle data-act="part" data-id="skin" cx="130" cy="50" r="32"/>
+    </g>
+    <g clip-path="url(#clipLegs)"><rect id="poolFill" pointer-events="none" x="80" y="500" width="100" height="0" fill="var(--cardio)" opacity=".5"/></g>
+    <g clip-path="url(#clipLimbs)"><rect id="muscle" pointer-events="none" x="40" y="100" width="180" height="400" fill="var(--thermo)" opacity="0"/></g>
+    <path id="spine" data-act="part" data-id="nerves" pointer-events="stroke" d="M130 84 V 262" fill="none" stroke="var(--nervous)" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round" opacity=".2"/>
+    <path id="vBase" data-act="part" data-id="vessels" pointer-events="stroke" d="M124 164 L124 140 C124 110 130 100 130 64 M126 190 L130 252 L108 478 M130 252 L152 478 M124 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-opacity=".4" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.2"/>
+    <path id="vFlow" pointer-events="none" d="M124 164 L124 140 C124 110 130 100 130 64 M126 190 L130 252 L108 478 M130 252 L152 478 M124 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-dasharray="0.1 11" stroke-linecap="round" stroke-width="3"/>
+    <ellipse id="brain" data-act="part" data-id="brain" cx="130" cy="44" rx="21" ry="16" fill="var(--nervous)"/>
+    <ellipse id="lungL" data-act="part" data-id="lungs" cx="102" cy="168" rx="19" ry="46" fill="var(--resp)" fill-opacity=".55" stroke="var(--resp)" stroke-width="2"/>
+    <ellipse id="lungR" data-act="part" data-id="lungs" cx="158" cy="168" rx="19" ry="46" fill="var(--resp)" fill-opacity=".55" stroke="var(--resp)" stroke-width="2"/>
+    <path id="heart" data-act="part" data-id="heart" d="M0,14 C-26,-6 -22,-30 -8,-30 C-3,-30 0,-26 0,-23 C0,-26 3,-30 8,-30 C22,-30 26,-6 0,14Z" fill="var(--cardio)" stroke="var(--bodyline)" stroke-width="1.5" transform="translate(124 176)"/>
+    <g id="dropsG" pointer-events="none"></g>
+  </g>
+</svg>
+      </div>
+      <div class="anat" id="anat"></div>
+      <div class="keys" aria-hidden="true">
+        <span style="--c:var(--cardio)"><b></b>Heart and blood</span>
+        <span style="--c:var(--resp)"><b></b>Lungs</span>
+        <span style="--c:var(--nervous)"><b></b>Brain and nerves</span>
+        <span style="--c:var(--thermo)"><b></b>Heat, muscle effort</span>
+        <span style="--c:var(--fluid)"><b></b>Sweat</span>
+      </div>
+      <div class="inputs"><h2 id="stimH">What the body is dealing with</h2><dl id="stim"></dl></div>
+    </section>
+
+    <section class="chart-col" aria-label="Measurements over time">
+      <div class="transport" id="transport">
+        <button class="play" id="play" data-act="play" aria-label="Play"></button>
+        <button class="btn" data-act="restart">Restart</button>
+        <button class="btn" data-act="prev" aria-label="Previous event">Prev step</button>
+        <button class="btn" data-act="next" aria-label="Next event">Next step</button>
+        <button class="btn" data-act="csv">Export CSV</button>
+        <button class="btn" data-act="link">Copy link</button>
+        <label style="font-size:14px;font-weight:600;display:inline-flex;gap:6px;align-items:center">Speed
+          <select id="speed"><option value="0.5">0.5&times;</option><option value="1" selected>1&times;</option><option value="2">2&times;</option><option value="4">4&times;</option></select></label>
+        <div class="clock" id="clock" aria-live="off"></div>
+      </div>
+      <div class="tl-row"><div class="pad"><span>Time and steps</span><label class="normtog"><input type="checkbox" id="normTog" checked> Normal ranges</label></div><canvas id="timeline" aria-label="Timeline. Drag to move through the simulation."></canvas></div>
+      <div id="channels"></div>
+    </section>
+
+    <aside class="explain" aria-label="Explanation"><div id="explainBody"></div></aside>
+  </main>
+
+
+  <section class="glossary" aria-label="Glossary">
+    <h1>Glossary</h1>
+    <p class="gintro">Plain-language definitions of the terms used in Physyra. Search by word or idea, and jump straight to a scenario where the term matters.</p>
+    <div class="gbar"><label for="gSearch" class="sr">Search the glossary</label><input type="search" id="gSearch" placeholder="Search terms, for example baroreflex or sweat" autocomplete="off"><span id="gCount"></span></div>
+    <div id="gList" class="glist"></div>
+    <p id="gEmpty" hidden>No terms match that search.</p>
+  </section>
+
+  <section class="about" aria-label="About Physyra">
+    <div class="wide aboutHead"><h1>About Physyra</h1><p>What it is, how it works, where the numbers come from, and how to use it in class.</p><figure class="pullquote"><blockquote>“The human body is complex — learning how it works shouldn’t have to be.”</blockquote><figcaption>— Shakir Khan, Creator &amp; Developer</figcaption></figure><p class="aboutContact"><strong>Questions or feedback?</strong> Email <a href="mailto:skoister6666@gmail.com">skoister6666@gmail.com</a> and Shakir will get back to you.</p><button class="btn" data-act="mode" data-mode="scenarios">Back to the simulator</button></div>
+    <div>
+      <h2>For students and teachers</h2>
+      <p>Physyra turns physiology into something you can watch. Each scenario runs a connected model of the heart, blood vessels, lungs, nerves and temperature control, so you can see not only what changes but the order in which it changes and why.</p>
+      <h3>Ideas it helps teach</h3>
+      <ul>
+        <li>Homeostasis and negative feedback, shown as a live control loop for each scenario.</li>
+        <li>How organ systems depend on each other: one change spreads to the rest of the body.</li>
+        <li>Why timing matters: fast nerve reflexes, slower chemical and hormonal responses, and very slow fluid and heat changes.</li>
+        <li>How bodies differ: compare a typical adult with a trained athlete or an older adult.</li>
+      </ul>
+      <h3>Ways to use it in class</h3>
+      <ul>
+        <li>Share a link that opens a specific scenario (use <em>Copy link</em>), or send students straight to <em>Explore</em>, <em>Challenge</em> or <em>Cases</em>.</li>
+        <li>Ask students to predict before pressing play, then explain any difference.</li>
+        <li>Export the simulated data as a CSV file for graphing and lab-style write-ups.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Learning goals by scenario</h2>
+      <table><tbody id="goalsBody"></tbody></table>
+    </div>
+    <div>
+      <h2>How the model works</h2>
+      <p>Physyra uses a small set of linked equations rather than a full-body simulation, so each relationship can be seen and explained.</p>
+      <ul>
+        <li>Mean arterial pressure is cardiac output multiplied by vascular resistance. Cardiac output is heart rate times stroke volume.</li>
+        <li>Stroke volume follows venous return (the Frank&ndash;Starling mechanism) and contractility, and shrinks when blood pools, volume drops, or the heart beats very fast.</li>
+        <li>A baroreflex compares pressure with a set point and adjusts sympathetic drive after a short delay, which sets heart rate and vessel tone.</li>
+        <li>Arterial CO&#8322; is CO&#8322; production divided by ventilation. Lung oxygen falls during a breath-hold, and saturation follows an S-shaped hemoglobin curve.</li>
+        <li>Core temperature is heat produced minus heat lost, with skin blood flow, sweating and shivering driven by the gap from the hypothalamic set point.</li>
+        <li>A typical adult at rest starts at about 65 beats per minute, a 75 mL stroke volume, a 93 mmHg mean pressure and 5 litres of blood.</li>
+      </ul>
+      <h3>Limits</h3>
+      <p>The numbers are illustrative and were tuned to match textbook ranges, not measured from real people. The model leaves out hormones, kidneys, individual differences and disease. It is a teaching tool, not a diagnostic tool, and it should be reviewed by a qualified instructor before being used for assessment.</p>
+    </div>
+    <div>
+      <h2>Sources</h2>
+      <p>Concepts and typical values are based on standard references. Please check editions and page numbers against your own copies.</p>
+      <ol>
+        <li><cite>Hall JE, Hall ME. Guyton and Hall Textbook of Medical Physiology. Elsevier.</cite></li>
+        <li><cite>Boron WF, Boulpaep EL. Medical Physiology. Elsevier.</cite></li>
+        <li><cite>Rowell LB. Human Cardiovascular Control. Oxford University Press, 1993.</cite></li>
+        <li><cite>Rowell LB. Human cardiovascular adjustments to exercise and thermal stress. Physiological Reviews, 1974;54(1):75&ndash;159.</cite></li>
+        <li><cite>Parkes MJ. Breath-holding and its breakpoint. Experimental Physiology, 2006;91(1):1&ndash;15.</cite></li>
+        <li><cite>Boulant JA. Role of the preoptic-anterior hypothalamus in thermoregulation and fever. Clinical Infectious Diseases, 2000;31(Suppl 5):S157&ndash;S161.</cite></li>
+        <li><cite>American College of Surgeons. Advanced Trauma Life Support (hemorrhage classification).</cite></li>
+        <li><cite>Tortora GJ, Derrickson B. Principles of Anatomy and Physiology. Wiley.</cite></li>
+        <li><cite>Drake RL, Vogl AW, Mitchell AWM. Gray&rsquo;s Anatomy for Students. Elsevier.</cite></li>
+      </ol>
+    </div>
+    <div>
+      <h2>Classroom resources</h2>
+      <p>Printable worksheets built from the simulation. Students predict, observe and explain, then define key terms. The answer key fills in the values from the model. Use your browser&rsquo;s print dialog to print or save as PDF.</p>
+      <table><tbody id="sheetBody"></tbody></table>
+      <h3>Keyboard shortcuts</h3>
+      <p>Space plays and pauses. The left and right arrow keys move along the timeline.</p>
+    </div>
+    <div>
+      <h2>Body types in the model</h2>
+      <p>The three body types change a handful of parameters, so you can see how differences in fitness and age alter the same response. They are simplified illustrations, not clinical categories.</p>
+      <table><thead><tr><th>Type</th><th>Resting HR</th><th>Resting stroke vol.</th><th>Baroreflex</th><th>Peak HR</th><th>Artery stiffness</th><th>Venous pooling</th></tr></thead><tbody id="profBody"></tbody></table>
+    </div>
+    <div>
+      <h2>Normal ranges and citing Physyra</h2>
+      <p>The shaded bands and the &ldquo;high&rdquo; and &ldquo;low&rdquo; flags use typical resting adult ranges: heart rate 60&ndash;100 per minute, cardiac output 4&ndash;8 L/min, breathing 12&ndash;20 per minute, oxygen saturation 95&ndash;100%, CO&#8322; 35&ndash;45 mmHg, temperature 36.1&ndash;37.2 &deg;C, blood volume 4.5&ndash;5.5 L, and blood pressure from 90/60 up to 130/90. Many readings are meant to leave these ranges during exercise or stress, and a slow resting heart rate is normal in athletes.</p>
+      <h3>How to cite</h3>
+      <p>Khan, S. (2026). <em>Physyra: An interactive physiology simulator</em> [Web application]. https://physyra.netlify.app</p>
+    </div>
+  </section>
+
+  <figure class="footquote"><blockquote>“The human body is complex — learning how it works shouldn’t have to be.”</blockquote><figcaption>— Shakir Khan, Creator &amp; Developer</figcaption></figure>
+  <p class="foot">Physyra uses simplified models of physiology to show how systems influence each other. The numbers are illustrative, not clinical, and nothing here is medical advice, diagnosis or treatment guidance. Real bodies vary a great deal.</p>
+</div>
+<div id="sheet" aria-hidden="true"></div>
+<div id="live" class="sr" aria-live="polite"></div>
+<script src="model.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
