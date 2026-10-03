@@ -4,7 +4,7 @@
 
 Physyra is an interactive physiology simulator that runs entirely in the browser. Pick a scenario (standing up, blood loss, holding your breath, acute stress, fever, cold exposure, heat and dehydration, exercise), press play, and watch the heart, vessels, lungs, nerves and temperature control respond step by step. Then change the variables yourself, test your knowledge, and explore the anatomy.
 
-Live site: https://physyra.netlify.app
+Live site: https://physyra.com
 
 > "The human body is complex — learning how it works shouldn't have to be."
 > — Shakir Khan, Creator & Developer
@@ -53,6 +53,6 @@ Drag this folder into the Deploys tab of a Netlify site, or push it to a GitHub 
 
 ## Credits
 
-Created and directed by Shakir Khan.
+Created and developed by Shakir Khan.
 
 Questions or feedback: skoister6666@gmail.com
