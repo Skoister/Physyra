@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" id="csMeta" content="light">
+<script>(function(){var t="light";try{t=localStorage.getItem("physyra-theme")||"light";}catch(e){}var r=document.documentElement;if(t==="auto"){r.removeAttribute("data-theme");document.getElementById("csMeta").content="light dark";}else{r.setAttribute("data-theme",t);document.getElementById("csMeta").content=t;}})();</script>
 <title>Physyra: see the body respond, second by second</title>
 <meta name="description" content="Physyra is an interactive physiology simulator. Watch the heart, lungs, nerves and temperature control respond to standing, exercise, blood loss, fever and more, then change the variables yourself.">
 <meta property="og:title" content="Physyra: an interactive physiology simulator">
@@ -26,6 +27,11 @@
       <button data-act="mode" data-mode="cases" aria-pressed="false">Cases</button>
       <button data-act="mode" data-mode="glossary" aria-pressed="false">Glossary</button>
       <button data-act="mode" data-mode="about" aria-pressed="false">About</button>
+    </div>
+    <div class="seg" role="group" aria-label="Colour theme">
+      <button data-act="theme" data-theme="light" aria-pressed="true">Light</button>
+      <button data-act="theme" data-theme="dark" aria-pressed="false">Dark</button>
+      <button data-act="theme" data-theme="auto" aria-pressed="false">Auto</button>
     </div>
     <div class="seg" role="group" aria-label="Explanation detail">
       <button data-act="level" data-level="basic" aria-pressed="true">Basic</button>
@@ -179,11 +185,10 @@
       <h2>Normal ranges and citing Physyra</h2>
       <p>The shaded bands and the &ldquo;high&rdquo; and &ldquo;low&rdquo; flags use typical resting adult ranges: heart rate 60&ndash;100 per minute, cardiac output 4&ndash;8 L/min, breathing 12&ndash;20 per minute, oxygen saturation 95&ndash;100%, CO&#8322; 35&ndash;45 mmHg, temperature 36.1&ndash;37.2 &deg;C, blood volume 4.5&ndash;5.5 L, and blood pressure from 90/60 up to 130/90. Many readings are meant to leave these ranges during exercise or stress, and a slow resting heart rate is normal in athletes.</p>
       <h3>How to cite</h3>
-      <p>Khan, S. (2026). <em>Physyra: An interactive physiology simulator</em> [Web application]. https://physyra.netlify.app</p>
+      <p>Khan, S. (2026). <em>Physyra: An interactive physiology simulator</em> [Web application]. https://physyra.com</p>
     </div>
   </section>
 
-  <figure class="footquote"><blockquote>“The human body is complex — learning how it works shouldn’t have to be.”</blockquote><figcaption>— Shakir Khan, Creator &amp; Developer</figcaption></figure>
   <p class="foot">Physyra uses simplified models of physiology to show how systems influence each other. The numbers are illustrative, not clinical, and nothing here is medical advice, diagnosis or treatment guidance. Real bodies vary a great deal.</p>
 </div>
 <div id="sheet" aria-hidden="true"></div>

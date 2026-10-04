@@ -954,6 +954,7 @@ document.addEventListener('click', e => {
   else if (act === 'creplay') { const c = A.cs; A.sc = c.sc; setMode('scenarios'); A.t = c.t; lastEvIdx = -2; renderRight(); }
   else if (act === 'intro') { $('#intro').hidden = true; }
   else if (act === 'link') { const u = location.href; const done = () => { b.textContent = 'Link copied'; setTimeout(() => b.textContent = 'Copy link', 1600); }; if (navigator.clipboard) navigator.clipboard.writeText(u).then(done, done); else done(); }
+  else if (act === 'theme') applyTheme(b.dataset.theme);
   else if (act === 'csv') exportCSV();
   else if (act === 'excsv') exportExploreCSV();
   else if (act === 'sheet') printSheet(id, b.dataset.key === '1');
@@ -1025,8 +1026,17 @@ function frame(ts) {
 function buildAnat() {
   $('#anat').innerHTML = '<span class="glabel">Anatomy</span>' + Object.keys(ANAT).map(k => '<button class="chip" data-act="part" data-id="' + k + '" style="--c:var(' + SYS[ANAT[k].sys].v + ')">' + ANAT[k].title + '</button>').join('');
 }
+function applyTheme(mode) {
+  const root = document.documentElement;
+  if (mode === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+  const meta = document.getElementById('csMeta'); if (meta) meta.content = mode === 'auto' ? 'light dark' : mode;
+  try { localStorage.setItem('physyra-theme', mode); } catch (e) {}
+  $$('[data-act="theme"]').forEach(x => x.setAttribute('aria-pressed', x.dataset.theme === mode));
+  readTheme();
+}
+function savedTheme() { try { return localStorage.getItem('physyra-theme') || 'light'; } catch (e) { return 'light'; } }
 function boot() {
-  readTheme(); initFigure(); buildChannels();
+  applyTheme(savedTheme()); initFigure(); buildChannels();
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readTheme(); });
   if (window.ResizeObserver) new ResizeObserver(() => fitAll()).observe($('#channels')); else window.addEventListener('resize', fitAll);
   buildAnat(); buildGlossary();

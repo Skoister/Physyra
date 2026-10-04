@@ -307,3 +307,17 @@ canvas{display:block;width:100%;touch-action:none}
 @media (max-width:760px){
   .footquote blockquote,.pullquote blockquote{white-space:normal}
 }
+
+/* about subtitle on one line */
+.about .aboutHead > p:not(.aboutContact){max-width:none;white-space:nowrap}
+@media (max-width:760px){.about .aboutHead > p:not(.aboutContact){white-space:normal}}
+
+/* theme switch */
+@media (max-width:780px){.top .seg:not(.modes){flex:0 0 auto}}
+
+@media (min-width:781px){
+  .top{gap:12px}
+  .seg button{padding:7px 11px}
+  .top .tag{max-width:26ch;font-size:13px}
+}
+@media (min-width:781px) and (max-width:1420px){.top .tag{display:none}}
