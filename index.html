@@ -3,6 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://physyra.com/">
+<meta property="og:url" content="https://physyra.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Physyra">
+<link rel="icon" href="/favicon.ico?v=2" sizes="48x48">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-48x48.png?v=2" type="image/png" sizes="48x48">
+<link rel="icon" href="/favicon-96x96.png?v=2" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#C0213A">
+<script>
+/* If the icon files were not uploaded next to index.html, fall back to icons embedded in this page so the tab icon always shows. */
+(function(){
+  var svg="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"14\" fill=\"#C0213A\"/><path d=\"M9 33H22L28 17L36 48L42 27L46 33H55\" fill=\"none\" stroke=\"#fff\" stroke-width=\"5.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>", png="data:image/png;base64,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";
+  var probe=new Image();
+  probe.onerror=function(){
+    Array.prototype.forEach.call(document.querySelectorAll('link[rel~="icon"]'),function(l){l.parentNode.removeChild(l);});
+    var a=document.createElement('link');a.rel='icon';a.type='image/png';a.sizes='96x96';a.href=png;document.head.appendChild(a);
+    var b=document.createElement('link');b.rel='icon';b.type='image/svg+xml';b.href='data:image/svg+xml,'+encodeURIComponent(svg);document.head.appendChild(b);
+  };
+  probe.src='/favicon-48x48.png?v=2';
+})();
+</script>
 <meta name="color-scheme" id="csMeta" content="light">
 <script>(function(){var t="light";try{t=localStorage.getItem("physyra-theme")||"light";}catch(e){}var r=document.documentElement;if(t==="auto"){r.removeAttribute("data-theme");document.getElementById("csMeta").content="light dark";}else{r.setAttribute("data-theme",t);document.getElementById("csMeta").content=t;}})();</script>
 <title>Physyra: see the body respond, second by second</title>
@@ -17,8 +41,8 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <h2 class="brand" style="margin:0"><svg class="mark" viewBox="0 0 64 24" aria-hidden="true"><path d="M1 13H17L22 3L29 22L34 8L38 13H63"/></svg>PHYSYRA</h2>
-    <p class="tag" style="margin:0">See the body respond, second by second.</p>
+    <div class="brandblock"><h2 class="brand" style="margin:0"><svg class="mark" viewBox="0 0 64 24" aria-hidden="true"><path d="M1 13H17L22 3L29 22L34 8L38 13H63"/></svg>PHYSYRA</h2>
+    <p class="tag" style="margin:0">See the body respond, second by second.</p></div>
     <span class="spacer"></span>
     <div class="seg modes" role="group" aria-label="Mode">
       <button data-act="mode" data-mode="scenarios" aria-pressed="true">Scenarios</button>
@@ -67,13 +91,13 @@
     </g>
     <g clip-path="url(#clipLegs)"><rect id="poolFill" pointer-events="none" x="80" y="500" width="100" height="0" fill="var(--cardio)" opacity=".5"/></g>
     <g clip-path="url(#clipLimbs)"><rect id="muscle" pointer-events="none" x="40" y="100" width="180" height="400" fill="var(--thermo)" opacity="0"/></g>
-    <path id="spine" data-act="part" data-id="nerves" pointer-events="stroke" d="M130 84 V 262" fill="none" stroke="var(--nervous)" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round" opacity=".2"/>
-    <path id="vBase" data-act="part" data-id="vessels" pointer-events="stroke" d="M124 164 L124 140 C124 110 130 100 130 64 M126 190 L130 252 L108 478 M130 252 L152 478 M124 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-opacity=".4" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.2"/>
-    <path id="vFlow" pointer-events="none" d="M124 164 L124 140 C124 110 130 100 130 64 M126 190 L130 252 L108 478 M130 252 L152 478 M124 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-dasharray="0.1 11" stroke-linecap="round" stroke-width="3"/>
+    <path id="spine" data-act="part" data-id="nerves" pointer-events="stroke" d="M121 84 V262 M139 84 V262" fill="none" stroke="var(--nervous)" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round" opacity=".2"/>
+    <path id="vBase" data-act="part" data-id="vessels" pointer-events="stroke" d="M130 64 V262 M108 262 H152 M108 262 V478 M152 262 V478 M130 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-opacity=".4" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.2"/>
+    <path id="vFlow" pointer-events="none" d="M130 64 V262 M108 262 H152 M108 262 V478 M152 262 V478 M130 148 C100 140 80 142 69 162 L69 244 M130 148 C156 140 176 142 191 162 L191 244" fill="none" stroke="var(--cardio)" stroke-dasharray="0.1 11" stroke-linecap="round" stroke-width="3"/>
     <ellipse id="brain" data-act="part" data-id="brain" cx="130" cy="44" rx="21" ry="16" fill="var(--nervous)"/>
     <ellipse id="lungL" data-act="part" data-id="lungs" cx="102" cy="168" rx="19" ry="46" fill="var(--resp)" fill-opacity=".55" stroke="var(--resp)" stroke-width="2"/>
     <ellipse id="lungR" data-act="part" data-id="lungs" cx="158" cy="168" rx="19" ry="46" fill="var(--resp)" fill-opacity=".55" stroke="var(--resp)" stroke-width="2"/>
-    <path id="heart" data-act="part" data-id="heart" d="M0,14 C-26,-6 -22,-30 -8,-30 C-3,-30 0,-26 0,-23 C0,-26 3,-30 8,-30 C22,-30 26,-6 0,14Z" fill="var(--cardio)" stroke="var(--bodyline)" stroke-width="1.5" transform="translate(124 176)"/>
+    <path id="heart" data-act="part" data-id="heart" d="M0,14 C-26,-6 -22,-30 -8,-30 C-3,-30 0,-26 0,-23 C0,-26 3,-30 8,-30 C22,-30 26,-6 0,14Z" fill="var(--cardio)" stroke="var(--bodyline)" stroke-width="1.5" transform="translate(136 176)"/>
     <g id="dropsG" pointer-events="none"></g>
   </g>
 </svg>
@@ -118,7 +142,7 @@
   </section>
 
   <section class="about" aria-label="About Physyra">
-    <div class="wide aboutHead"><h1>About Physyra</h1><p>What it is, how it works, where the numbers come from, and how to use it in class.</p><figure class="pullquote"><blockquote>“The human body is complex — learning how it works shouldn’t have to be.”</blockquote><figcaption>— Shakir Khan, Creator &amp; Developer</figcaption></figure><p class="aboutContact"><strong>Questions or feedback?</strong> Email <a href="mailto:skoister6666@gmail.com">skoister6666@gmail.com</a> and Shakir will get back to you.</p><button class="btn" data-act="mode" data-mode="scenarios">Back to the simulator</button></div>
+    <div class="wide aboutHead"><h1>About Physyra</h1><p>What it is, how it works, where the numbers come from, and how to use it in class.</p><figure class="pullquote"><blockquote>“The human body is complex — learning how it works shouldn’t have to be.”</blockquote><figcaption>— Shakir Khan, Creator &amp; Developer</figcaption></figure><p class="aboutContact"><strong>Questions or feedback?</strong> Email <a href="mailto:shakir.h.khan2@gmail.com">shakir.h.khan2@gmail.com</a> and Shakir will get back to you.</p><button class="btn" data-act="mode" data-mode="scenarios">Back to the simulator</button></div>
     <div>
       <h2>For students and teachers</h2>
       <p>Physyra turns physiology into something you can watch. Each scenario runs a connected model of the heart, blood vessels, lungs, nerves and temperature control, so you can see not only what changes but the order in which it changes and why.</p>

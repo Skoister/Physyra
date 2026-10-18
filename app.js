@@ -585,7 +585,7 @@ function drawChart(c, tIdx) {
   }
   // baseline
   ctx.strokeStyle = T.rule2; ctx.lineWidth = 1; ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(0, Y(base)); ctx.lineTo(W, Y(base)); ctx.stroke(); ctx.setLineDash([]);
-  const last = explore ? len - 1 : tIdx;
+  const last = explore ? len - 1 : Math.max(0, Math.min(tIdx, len - 1));
   const path = (key2, upTo) => { ctx.beginPath(); const m = Math.floor(upTo); for (let i = 0; i <= m; i++) { const x = X(i), y = Y(series[i][key2]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
     if (upTo > m && m < len - 1) { const f = upTo - m, v = series[m][key2] + (series[m + 1][key2] - series[m][key2]) * f; ctx.lineTo(X(upTo), Y(v)); } };
   if (ghost) {
@@ -652,7 +652,7 @@ function drawFigure(v, dt, ts) {
   heartPh = (heartPh + dt * v.hr / 60) % 1;
   const amp = RM ? 0.04 : 0.13, bump = heartPh < 0.22 ? Math.sin(Math.PI * heartPh / 0.22) : 0;
   const hs = 0.95 * (1 + amp * bump);
-  fig.heart.setAttribute('transform', 'translate(124 176) scale(' + hs.toFixed(3) + ')');
+  fig.heart.setAttribute('transform', 'translate(136 176) scale(' + hs.toFixed(3) + ')');
   // lungs
   const held = v.rr < 0.5;
   $$('#fig [data-act="part"]').forEach(el => el.classList.toggle('hl', el.dataset.id === A.part));
@@ -844,7 +844,7 @@ function render(ts, dt) {
     if (R.lastc !== cm) { R.cmp.textContent = cm; R.lastc = cm; }
   });
   const tIdx = A.mode === 'explore' ? 0 : A.t / A.res.sampleDt;
-  if (A.mode !== 'cases') { CH.forEach(c => drawChart(c, tIdx)); drawTimeline(); }
+  if (A.mode === 'scenarios' || A.mode === 'explore' || A.mode === 'challenge') { CH.forEach(c => drawChart(c, tIdx)); drawTimeline(); }
   drawFigure(v, dt, ts);
   // clock
   if (A.mode === 'explore' || A.mode === 'cases') $('#clock').innerHTML = '';
@@ -903,7 +903,7 @@ function setMode(m) {
   for (const k in rangeCache) delete rangeCache[k];
   $('#channels').classList.toggle('cases-on', m === 'cases'); document.body.classList.toggle('mode-cases', m === 'cases');
   if (m !== 'scenarios') { A.res2 = null; $('#channels').classList.remove('cmp-on'); setHash(m); }
-  if (m === 'cases') { A.res = getRes('stand', 600, 'adult'); A.events = []; A.loopT = []; A.cs = null; newCase(); }
+  if (m === 'cases') { A.res = getRes('stand', 600, 'adult'); A.events = []; A.loopT = []; A.t = 0; if (A.cs) { renderHead(); renderPicker(); renderRight(); } else newCase(); }
   else if (m === 'scenarios') loadScenario(A.sc);
   else if (m === 'explore') { if (!S) exploreReset(); A.exHint = ''; renderHead(); renderPicker(); renderRight(); }
   else { A.chal = null; A.chalAns = null; A.chalOrder = null; A.res = getRes('stand'); A.events = []; A.revealGhost = false; A.t = 0; renderHead(); renderPicker(); renderRight(); }

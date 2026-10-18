@@ -318,6 +318,8 @@ canvas{display:block;width:100%;touch-action:none}
 @media (min-width:781px){
   .top{gap:12px}
   .seg button{padding:7px 11px}
-  .top .tag{max-width:26ch;font-size:13px}
 }
-@media (min-width:781px) and (max-width:1420px){.top .tag{display:none}}
+
+/* tagline stacked under the wordmark, one line */
+.brandblock{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.brandblock .tag{margin:0!important;max-width:none;white-space:nowrap;font-size:13px;line-height:1.2}
