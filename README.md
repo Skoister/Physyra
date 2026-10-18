@@ -55,4 +55,4 @@ Drag this folder into the Deploys tab of a Netlify site, or push it to a GitHub 
 
 Created and developed by Shakir Khan.
 
-Questions or feedback: skoister6666@gmail.com
+Questions or feedback: shakir.h.khan2@gmail.com
