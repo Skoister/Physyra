@@ -53,6 +53,6 @@ Drag this folder into the Deploys tab of a Netlify site, or push it to a GitHub 
 
 ## Credits
 
-Created and directed by Shakir Khan.
+Created and developed by Shakir Khan.
 
 Questions or feedback: shakir.h.khan2@gmail.com
