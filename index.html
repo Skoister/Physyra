@@ -29,7 +29,7 @@
 </script>
 <meta name="color-scheme" id="csMeta" content="light">
 <script>(function(){var t="light";try{t=localStorage.getItem("physyra-theme")||"light";}catch(e){}var r=document.documentElement;if(t==="auto"){r.removeAttribute("data-theme");document.getElementById("csMeta").content="light dark";}else{r.setAttribute("data-theme",t);document.getElementById("csMeta").content=t;}})();</script>
-<title>Physyra: see the body respond, second by second</title>
+<title>Physyra</title>
 <meta name="description" content="Physyra is an interactive physiology simulator. Watch the heart, lungs, nerves and temperature control respond to standing, exercise, blood loss, fever and more, then change the variables yourself.">
 <meta property="og:title" content="Physyra: an interactive physiology simulator">
 <meta property="og:description" content="Watch how the body responds step by step, then experiment with it.">
@@ -72,6 +72,7 @@
       <h1 id="scTitle"></h1>
       <p class="q" id="scQ"></p>
       <div class="fig-wrap">
+<div class="soundbar"><button class="soundbtn" id="soundBtn" data-act="sound" aria-pressed="false" aria-label="Turn sound on (heartbeat, breathing and step chimes)"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="sp" d="M4 9v6h4l5 4V5L8 9z"/><path class="sw" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="sx" d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="soundLbl">Sound off</span></button><input type="range" id="vol" min="0" max="100" value="60" aria-label="Volume" hidden></div>
 <svg id="fig" viewBox="-150 0 560 560" role="img" aria-label="Animated diagram of the human body showing the heart, lungs, brain, blood vessels, and muscles responding to the simulation">
   <defs>
     <radialGradient id="auraG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--thermo)" stop-opacity=".8"/><stop offset="1" stop-color="var(--thermo)" stop-opacity="0"/></radialGradient>
@@ -158,6 +159,7 @@
         <li>Share a link that opens a specific scenario (use <em>Copy link</em>), or send students straight to <em>Explore</em>, <em>Challenge</em> or <em>Cases</em>.</li>
         <li>Ask students to predict before pressing play, then explain any difference.</li>
         <li>Export the simulated data as a CSV file for graphing and lab-style write-ups.</li>
+        <li>Turn on sound with the speaker button beside the body to hear the heartbeat and breathing follow the simulation. Sound is off by default.</li>
       </ul>
     </div>
     <div>

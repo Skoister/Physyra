@@ -323,3 +323,17 @@ canvas{display:block;width:100%;touch-action:none}
 /* tagline stacked under the wordmark, one line */
 .brandblock{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
 .brandblock .tag{margin:0!important;max-width:none;white-space:nowrap;font-size:13px;line-height:1.2}
+
+/* sound control */
+.soundbar{position:static;margin:0 0 8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.soundbtn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--ink);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px 5px 9px;font-weight:600;font-size:13px}
+.soundbtn svg{width:18px;height:18px}
+.soundbtn .sp{fill:currentColor}
+.soundbtn .sw{display:none}
+.soundbtn.on .sw{display:inline}
+.soundbtn.on .sx{display:none}
+.soundbtn.on{background:var(--ink);color:var(--on-ink)}
+.soundbtn:hover:not(.on){background:color-mix(in srgb,var(--ink) 10%,var(--panel))}
+.soundbar input[type=range]{width:90px;accent-color:var(--ink)}
+.soundbar input[hidden]{display:none}
+@media (max-width:780px){.soundbar{top:0}}

@@ -649,7 +649,7 @@ function drawFigure(v, dt, ts) {
   const ang = usePosture ? -90 * (1 - standSm) : 0;
   fig.rig.setAttribute('transform', 'translate(' + jx.toFixed(2) + ' 0) rotate(' + ang.toFixed(1) + ' 130 280)');
   // heart
-  heartPh = (heartPh + dt * v.hr / 60) % 1;
+  const hp0 = heartPh; heartPh = (heartPh + dt * v.hr / 60) % 1; if (heartPh < hp0 && soundOn()) SND.beat(v.hr);
   const amp = RM ? 0.04 : 0.13, bump = heartPh < 0.22 ? Math.sin(Math.PI * heartPh / 0.22) : 0;
   const hs = 0.95 * (1 + amp * bump);
   fig.heart.setAttribute('transform', 'translate(136 176) scale(' + hs.toFixed(3) + ')');
@@ -657,6 +657,7 @@ function drawFigure(v, dt, ts) {
   const held = v.rr < 0.5;
   $$('#fig [data-act="part"]').forEach(el => el.classList.toggle('hl', el.dataset.id === A.part));
   breathPh = (breathPh + dt * (held ? 0 : v.rr) / 60) % 1;
+  if (soundOn()) SND.breath(v.rr, breathPh, held); else SND.silence();
   const depth = 0.07 + 0.07 * clamp((v.rr - 14) / 25, 0, 1);
   const br = held ? 0.7 : 0.5 - 0.5 * Math.cos(2 * Math.PI * breathPh), sc = 1 + depth * br + (held ? 0.04 : 0);
   fig.lungL.setAttribute('transform', 'translate(102 168) scale(' + (1 + (sc - 1) * 0.8).toFixed(3) + ' ' + sc.toFixed(3) + ') translate(-102 -168)');
@@ -857,7 +858,7 @@ function render(ts, dt) {
   // right panel refresh when event / trend changes
   if (A.mode !== 'explore') {
     const k = curEventIdx(), tr = trend(CHD[A.sel], A.t), lc = loopLit();
-    if (k !== lastEvIdx || tr !== lastTrend || lc !== lastLoop) { if (k !== lastEvIdx && A.events[k] && (A.playing || A.t > 0)) $('#live').textContent = fmtT(A.events[k].t) + ': ' + A.events[k].title; lastEvIdx = k; lastTrend = tr; lastLoop = lc; renderRight(); }
+    if (k !== lastEvIdx || tr !== lastTrend || lc !== lastLoop) { if (k !== lastEvIdx && A.events[k] && (A.playing || A.t > 0)) $('#live').textContent = fmtT(A.events[k].t) + ': ' + A.events[k].title; if (k !== lastEvIdx && A.events[k] && A.playing && soundOn()) SND.chime(); lastEvIdx = k; lastTrend = tr; lastLoop = lc; renderRight(); }
   } else {
     const tr = trend(CHD[A.sel], 0); if (tr !== lastTrend) { lastTrend = tr; refreshChanCard(); }
   }
@@ -918,6 +919,7 @@ function answer(i) {
   const c = A.chal; if (!c || A.chalAns != null) return;
   A.chalAns = +i; const opts = c.type === 'first' ? c.opts.map(id => id === c.correct) : c.opts.map(o => o[1]);
   if (opts[A.chalAns]) A.done[c.id] = true;
+  SND.answer(!!opts[A.chalAns]);
   A.revealGhost = true; A.chalRun = true; A.t = 0; A.playing = true; lastEvIdx = -2; renderPicker(); renderRight();
 }
 function rate() { return D() / SCD[A.sc].playSecs * A.speed; }
@@ -949,12 +951,13 @@ document.addEventListener('click', e => {
   else if (act === 'preset') { const p = PRESETS[+id]; exploreReset(false); Object.assign(A.ex, p.set); A.exHint = p.hint; renderRight(); }
   else if (act === 'reset') { exploreReset(false); A.exHint = ''; renderRight(); }
   else if (act === 'part') { if (A.mode === 'cases') return; A.part = (id === '' || A.part === id) ? '' : id; renderRight(); }
-  else if (act === 'canswer') { const c = A.cs; if (!c || c.ans != null) return; c.ans = +id; A.caseScore.t++; if (c.opts[c.ans] === c.sc) A.caseScore.r++; renderPicker(); renderRight(); }
+  else if (act === 'canswer') { const c = A.cs; if (!c || c.ans != null) return; c.ans = +id; A.caseScore.t++; if (c.opts[c.ans] === c.sc) A.caseScore.r++; SND.answer(c.opts[c.ans] === c.sc); renderPicker(); renderRight(); }
   else if (act === 'cnext') newCase();
   else if (act === 'creplay') { const c = A.cs; A.sc = c.sc; setMode('scenarios'); A.t = c.t; lastEvIdx = -2; renderRight(); }
   else if (act === 'intro') { $('#intro').hidden = true; }
   else if (act === 'link') { const u = location.href; const done = () => { b.textContent = 'Link copied'; setTimeout(() => b.textContent = 'Copy link', 1600); }; if (navigator.clipboard) navigator.clipboard.writeText(u).then(done, done); else done(); }
   else if (act === 'theme') applyTheme(b.dataset.theme);
+  else if (act === 'sound') { SND.set(!SND.on); updateSoundUI(); }
   else if (act === 'csv') exportCSV();
   else if (act === 'excsv') exportExploreCSV();
   else if (act === 'sheet') printSheet(id, b.dataset.key === '1');
@@ -1002,6 +1005,8 @@ document.addEventListener('input', e => {
   $$('#gList .gterm').forEach(el => { const ok = !q || el.dataset.q.indexOf(q) >= 0; el.hidden = !ok; if (ok) n++; });
   $('#gCount').textContent = q ? n + ' of ' + GL.length + ' terms' : GL.length + ' terms'; $('#gEmpty').hidden = n > 0;
 });
+document.addEventListener('input', e => { if (e.target.id === 'vol') SND.setVolume(+e.target.value / 100); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) SND.silence(); });
 document.addEventListener('keydown', e => {
   if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || e.metaKey || e.ctrlKey) return;
   if (A.mode === 'explore') return;
@@ -1025,6 +1030,74 @@ function frame(ts) {
 }
 function buildAnat() {
   $('#anat').innerHTML = '<span class="glabel">Anatomy</span>' + Object.keys(ANAT).map(k => '<button class="chip" data-act="part" data-id="' + k + '" style="--c:var(' + SYS[ANAT[k].sys].v + ')">' + ANAT[k].title + '</button>').join('');
+}
+/* ---------- sound (Web Audio, synthesized in the browser; off by default) ---------- */
+const SND = {
+  on: false, ctx: null, master: null, nFilt: null, nGain: null, volume: 0.6,
+  init() {
+    if (this.ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    this.ctx = new AC();
+    this.master = this.ctx.createGain(); this.master.gain.value = this.volume * this.volume * 1.5; this.master.connect(this.ctx.destination);
+    const len = this.ctx.sampleRate * 2, buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = this.ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    this.nFilt = this.ctx.createBiquadFilter(); this.nFilt.type = 'bandpass'; this.nFilt.frequency.value = 500; this.nFilt.Q.value = 0.6;
+    this.nGain = this.ctx.createGain(); this.nGain.gain.value = 0;
+    src.connect(this.nFilt); this.nFilt.connect(this.nGain); this.nGain.connect(this.master); src.start();
+  },
+  set(on) {
+    this.on = on;
+    if (on) { this.init(); if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); } else this.silence();
+  },
+  setVolume(v) { this.volume = v; if (this.master) this.master.gain.setTargetAtTime(v * v * 1.5, this.ctx.currentTime, 0.03); },
+  ready() { return this.on && this.ctx && this.ctx.state === 'running'; },
+  silence() { if (this.nGain) this.nGain.gain.setTargetAtTime(0, this.ctx.currentTime, 0.05); },
+  tone(freq, t0, dur, vol, type, freqEnd) {
+    const c = this.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
+    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(this.master); o.start(t0); o.stop(t0 + dur + 0.05);
+  },
+  beat(hr) {                      // "lub-dub", closer together as heart rate rises
+    if (!this.ready()) return;
+    const t = this.ctx.currentTime, gap = Math.min(0.3, (60 / hr) * 0.36);
+    this.tone(125, t, 0.13, 0.55, 'sine', 78); this.tone(250, t, 0.08, 0.16, 'sine', 160);
+    this.tone(150, t + gap, 0.11, 0.38, 'sine', 95); this.tone(300, t + gap, 0.07, 0.1, 'sine', 190);
+  },
+  breath(rr, ph, held) {          // soft airflow that follows the animated lungs
+    if (!this.ready()) return;
+    const t = this.ctx.currentTime; let g = 0, f = 450;
+    if (!held && rr > 0.5) {
+      const s = Math.sin(2 * Math.PI * ph), flow = Math.abs(s), depth = 0.5 + 0.5 * Math.min(1, Math.max(0, (rr - 10) / 30));
+      g = 0.16 * depth * flow * flow; f = (s > 0 ? 500 : 380) + 700 * flow;
+    }
+    this.nGain.gain.setTargetAtTime(g, t, 0.04); this.nFilt.frequency.setTargetAtTime(f, t, 0.05);
+  },
+  chime() {                       // a new step in the sequence
+    if (!this.ready()) return; const t = this.ctx.currentTime;
+    if (t - (this.lastChime || -9) < 0.7) return; this.lastChime = t;   // avoid a cluster of chimes when steps are close together
+    this.tone(660, t, 0.22, 0.14, 'sine'); this.tone(990, t + 0.09, 0.3, 0.12, 'sine');
+  },
+  answer(ok) {                    // Challenge and Cases feedback
+    if (!this.ready()) return; const t = this.ctx.currentTime;
+    if (ok) { this.tone(523, t, 0.18, 0.16, 'sine'); this.tone(784, t + 0.12, 0.34, 0.16, 'sine'); }
+    else { this.tone(240, t, 0.3, 0.14, 'triangle', 170); }
+  }
+};
+function soundOn() {
+  if (!SND.ready() || document.hidden) return false;
+  if (A.mode === 'explore' || A.mode === 'cases') return true;
+  if (A.mode === 'scenarios' || A.mode === 'challenge') return A.playing;
+  return false;
+}
+function updateSoundUI() {
+  const b = $('#soundBtn'); if (!b) return;
+  b.setAttribute('aria-pressed', SND.on); b.classList.toggle('on', SND.on);
+  $('#soundLbl').textContent = SND.on ? 'Sound on' : 'Sound off';
+  b.setAttribute('aria-label', SND.on ? 'Turn sound off' : 'Turn sound on (heartbeat, breathing and step chimes)');
+  $('#vol').hidden = !SND.on;
 }
 function applyTheme(mode) {
   const root = document.documentElement;
